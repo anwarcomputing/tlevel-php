@@ -24,14 +24,15 @@
                     // If not logged in, check if the form is submitted
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Validate the login credentials (you may replace this with a database check)
-                        $username = $_POST['username'];
-                        $password = $_POST['password'];
-
-                        // For demonstration purposes, let's use a simple check
-                        if ($username === 'demo' && $password === 'password') {
+                        $escaped_username = $conn->real_escape_string($_POST['username']);
+                        $escaped_password = $conn->real_escape_string($_POST['password']);
+                        // Query to check login credentials
+                        $sql = "SELECT * FROM users WHERE username='$escaped_username' AND password='$escaped_password'";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
                             // Set the session variable
-                            $_SESSION['username'] = $username;
-                            echo '<div class="alert alert-success" role="alert">Login successful. Welcome, ' . $username . '!</div>';
+                            $_SESSION['username'] = $escaped_username;
+                            echo '<div class="alert alert-success" role="alert">Login successful. Welcome, ' . $escaped_username . '!</div>';
                         } else {
                             echo '<div class="alert alert-danger" role="alert">Invalid login credentials.</div>';
                         }
