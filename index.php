@@ -1,3 +1,22 @@
+<?php
+
+// Start the session
+session_start();
+
+if (isset($_GET['logout'])) {
+    // Destroy the session
+    session_destroy();
+    
+    // Redirect to the login page
+    header('Location: .');
+    exit;
+}
+
+// Configure Database
+include("db_config.php");
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,12 +33,12 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
-                // Start the session
-                session_start();
+               
 
                 // Check if the user is already logged in
                 if (isset($_SESSION['username'])) {
-                    echo '<div class="alert alert-success" role="alert">Welcome back, ' . $_SESSION['username'] . '!</div>';
+                    echo '<div class="alert alert-success" role="alert">Welcome back, ' . $_SESSION['username'] . '! <a href="?logout=1">Logout</a></div>';
+                    
                 } else {
                     // If not logged in, check if the form is submitted
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -32,32 +51,14 @@
                         if ($result->num_rows > 0) {
                             // Set the session variable
                             $_SESSION['username'] = $escaped_username;
-                            echo '<div class="alert alert-success" role="alert">Login successful. Welcome, ' . $escaped_username . '!</div>';
+                            echo '<div class="alert alert-success" role="alert">Login successful. Welcome, ' . $escaped_username . '! <a href="?logout=1">Logout</a></div>';
                         } else {
                             echo '<div class="alert alert-danger" role="alert">Invalid login credentials.</div>';
+                            include ("loginform.html");
                         }
                     } else {
                         // Display the login form
-                        ?>
-                        <div class="card">
-                            <div class="card-body">
-                                <h2 class="card-title">Login</h2>
-                                <form method="post" action="">
-                                    <div class="form-group">
-                                        <label for="username">Username:</label>
-                                        <input type="text" class="form-control" id="username" name="username" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="password">Password:</label>
-                                        <input type="password" class="form-control" id="password" name="password" required>
-                                    </div>
-
-                                    <button type="submit" class="btn btn-primary">Login</button>
-                                </form>
-                            </div>
-                        </div>
-                        <?php
+                        include ("loginform.html");
                     }
                 }
                 ?>
