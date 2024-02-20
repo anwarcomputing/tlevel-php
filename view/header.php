@@ -9,7 +9,7 @@ if (isset($_GET['logout'])) {
 }
 
 if (empty($_SESSION['username'])) {
-    include("model\db_config.php");
+    include("model\login_db.php");
 }
 ?>
 
@@ -40,15 +40,17 @@ if (empty($_SESSION['username'])) {
                         <a class="nav-link" href="#">Weather</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Information</a>
+                        <a class="nav-link" href="articles.php">Information</a>
                     </li>
                     <?php } ?> 
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <?php if (isset($_SESSION['username'])) { ?>
-                    <span class="navbar-text">
-                        <?php echo ($_SESSION['username']); ?>
-                    </span>
+                    
+                        <?php if (isset($_SESSION['username'])) { ?>
+                            <a class="nav-link" href="profile.php"><?php echo $_SESSION['username']; ?></a>
+                        <?php } ?>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="?logout=1">Logout</a>
                     </li>

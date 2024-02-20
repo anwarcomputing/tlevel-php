@@ -1,15 +1,6 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "my_database";
-
-try {
-    $conn = new mysqli($servername, $username, $password, $database);
-} catch (mysqli_sql_exception $e) {
-    die ("Connection failed: Check Database settings <br>".$e);
-}
+include("db.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['username'])) {
@@ -41,5 +32,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = "Complete all values";
     }
 }
-
-?>
